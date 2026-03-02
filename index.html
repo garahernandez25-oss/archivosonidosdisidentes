@@ -1,1 +1,1406 @@
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mujeres & Disidencias — Música Experimental Española</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0d0d;
+    --surface: #151515;
+    --surface2: #1e1e1e;
+    --border: #2a2a2a;
+    --accent: #e8c86d;
+    --accent2: #c45c8a;
+    --accent3: #6dc4b4;
+    --text: #e8e4dc;
+    --muted: #888;
+    --danger: #c45c5c;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 2rem 2.5rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: -60px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(196,92,138,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; right: 10%;
+    width: 350px; height: 350px;
+    background: radial-gradient(circle, rgba(109,196,180,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .header-label {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 0.5rem;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 3.2rem);
+    font-weight: 900;
+    font-style: italic;
+    line-height: 1.1;
+    color: var(--text);
+  }
+
+  h1 em {
+    color: var(--accent);
+    font-style: normal;
+  }
+
+  .header-sub {
+    margin-top: 0.5rem;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+  }
+
+  .stats-bar {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  /* TOOLBAR */
+  .toolbar {
+    display: flex;
+    gap: 1rem;
+    padding: 1.2rem 2.5rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .search-wrap {
+    position: relative;
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .search-wrap svg {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    pointer-events: none;
+  }
+
+  input[type="text"], select {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    padding: 0.5rem 0.75rem;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  input[type="text"]:focus, select:focus {
+    border-color: var(--accent);
+  }
+
+  .search-wrap input {
+    width: 100%;
+    padding-left: 32px;
+  }
+
+  select {
+    cursor: pointer;
+    min-width: 160px;
+  }
+
+  select option { background: var(--surface2); }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #0d0d0d;
+  }
+  .btn-primary:hover { background: #f0d47a; }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+  .btn-ghost:hover { color: var(--text); border-color: var(--muted); }
+
+  .btn-danger {
+    background: transparent;
+    color: var(--danger);
+    border: 1px solid transparent;
+  }
+  .btn-danger:hover { background: rgba(196,92,92,0.1); }
+
+  .btn-sm {
+    padding: 0.3rem 0.6rem;
+    font-size: 10px;
+  }
+
+  /* VIEW TOGGLE */
+  .view-toggle {
+    display: flex;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .view-btn {
+    padding: 0.5rem 0.75rem;
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .view-btn.active {
+    background: var(--accent);
+    color: #0d0d0d;
+  }
+
+  /* MAIN */
+  main {
+    padding: 1.5rem 2.5rem;
+  }
+
+  /* RESULTS INFO */
+  .results-info {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 1rem;
+    letter-spacing: 0.05em;
+  }
+  .results-info span { color: var(--accent); }
+
+  /* TABLE VIEW */
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  thead {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+
+  th {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  th:hover { color: var(--text); }
+  th.sorted { color: var(--accent); }
+
+  th .sort-arrow { margin-left: 4px; opacity: 0.5; }
+  th.sorted .sort-arrow { opacity: 1; }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+  }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--surface); }
+
+  td {
+    padding: 0.7rem 1rem;
+    vertical-align: middle;
+  }
+
+  .name-cell {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .name-cell .alias {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    font-weight: 400;
+    display: block;
+    font-style: italic;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  .tag-cat {
+    background: rgba(232,200,109,0.12);
+    color: var(--accent);
+    border: 1px solid rgba(232,200,109,0.25);
+  }
+
+  .tag-loc {
+    background: rgba(109,196,180,0.1);
+    color: var(--accent3);
+    border: 1px solid rgba(109,196,180,0.2);
+  }
+
+  .tag-year {
+    color: var(--accent2);
+    font-size: 11px;
+  }
+
+  .actions-cell {
+    display: flex;
+    gap: 4px;
+    justify-content: flex-end;
+  }
+
+  /* CARD VIEW */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem;
+    transition: border-color 0.2s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent2), var(--accent), var(--accent3));
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .card:hover { border-color: var(--accent2); transform: translateY(-2px); }
+  .card:hover::before { opacity: 1; }
+
+  .card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    font-style: italic;
+    margin-bottom: 0.25rem;
+    line-height: 1.2;
+  }
+
+  .card-alias {
+    font-size: 10px;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+
+  .card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 0.75rem;
+  }
+
+  .card-otros {
+    font-size: 10px;
+    color: var(--muted);
+    font-style: italic;
+    margin-top: 0.5rem;
+    border-top: 1px solid var(--border);
+    padding-top: 0.5rem;
+  }
+
+  .card-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 1rem;
+  }
+
+  /* NO CATEGORY DOT */
+  .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--border);
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(4px);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+
+  .modal-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    width: 100%;
+    max-width: 520px;
+    padding: 2rem;
+    transform: translateY(20px);
+    transition: transform 0.2s;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .modal-overlay.open .modal {
+    transform: translateY(0);
+  }
+
+  .modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    font-style: italic;
+    margin-bottom: 1.5rem;
+    color: var(--accent);
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.4rem;
+  }
+
+  .form-group input, .form-group textarea {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    padding: 0.6rem 0.75rem;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.2s;
+    resize: vertical;
+  }
+
+  .form-group input:focus, .form-group textarea:focus {
+    border-color: var(--accent);
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+
+  /* CONFIRM MODAL */
+  .confirm-text {
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+    font-size: 12px;
+  }
+  .confirm-name {
+    color: var(--text);
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    padding: 0.75rem 1.25rem;
+    border-radius: 6px;
+    font-size: 12px;
+    z-index: 200;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.3s;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* EXPORT */
+  .toolbar-right {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    margin-left: auto;
+  }
+
+  /* EMPTY */
+  .empty {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--muted);
+  }
+  .empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.3;
+  }
+
+  @media (max-width: 640px) {
+    header, .toolbar, main { padding-left: 1rem; padding-right: 1rem; }
+    .form-row { grid-template-columns: 1fr; }
+    .toolbar-right { margin-left: 0; }
+  }
+
+  /* ABOUT BUTTON */
+  .about-btn {
+    position: absolute;
+    top: 1.5rem; right: 2.5rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    padding: 0.4rem 0.9rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    z-index: 10;
+  }
+  .about-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* ABOUT PANEL */
+  .about-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(6px);
+    z-index: 300;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .about-overlay.open { opacity: 1; pointer-events: all; }
+
+  .about-panel {
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: 100%; max-width: 540px;
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    overflow-y: auto;
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+    display: flex; flex-direction: column;
+  }
+  .about-overlay.open .about-panel { transform: translateX(0); }
+
+  .about-header {
+    padding: 2rem 2rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    background: linear-gradient(135deg, rgba(196,92,138,0.06) 0%, transparent 60%);
+  }
+  .about-close {
+    position: absolute; top: 1.5rem; right: 1.5rem;
+    background: transparent; border: 1px solid var(--border);
+    color: var(--muted); width: 28px; height: 28px;
+    border-radius: 50%; cursor: pointer; font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .about-close:hover { color: var(--text); border-color: var(--muted); }
+
+  .about-role {
+    font-size: 10px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--accent2); margin-bottom: 0.4rem;
+  }
+  .about-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem; font-weight: 700; font-style: italic;
+    line-height: 1.2; color: var(--text); margin-bottom: 0.75rem;
+  }
+  .about-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 0.5rem; }
+  .about-tag {
+    font-size: 10px; padding: 3px 10px;
+    border-radius: 20px; border: 1px solid var(--border);
+    color: var(--muted); letter-spacing: 0.05em;
+  }
+
+  .about-body { padding: 1.5rem 2rem; flex: 1; }
+  .about-section { margin-bottom: 1.75rem; }
+  .about-section-title {
+    font-size: 9px; letter-spacing: 0.25em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 0.75rem; padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .about-text { font-size: 12px; line-height: 1.85; color: #b0aca4; }
+  .about-text p { margin-bottom: 0.75rem; }
+  .about-text p:last-child { margin-bottom: 0; }
+
+  .about-meta-row {
+    display: flex; gap: 0.75rem;
+    align-items: baseline; margin-bottom: 0.5rem;
+  }
+  .about-meta-label {
+    font-size: 9px; color: var(--accent2);
+    letter-spacing: 0.15em; text-transform: uppercase;
+    white-space: nowrap; min-width: 100px;
+  }
+  .about-meta-val { font-size: 11px; color: var(--muted); }
+
+  .about-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--accent3); text-decoration: none; font-size: 11px;
+    border-bottom: 1px solid rgba(109,196,180,0.3); padding-bottom: 1px;
+    transition: border-color 0.2s; word-break: break-all;
+  }
+  .about-link:hover { border-color: var(--accent3); }
+
+  .about-footer {
+    padding: 1.25rem 2rem;
+    border-top: 1px solid var(--border);
+    font-size: 10px; color: var(--muted);
+    letter-spacing: 0.05em; line-height: 1.7;
+  }
+  /* PASSWORD MODAL */
+  .lock-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .lock-badge:hover { color: var(--accent); border-color: var(--accent); }
+  .lock-badge.unlocked { color: var(--accent3); border-color: rgba(109,196,180,0.4); }
+
+  .pwd-input-wrap {
+    position: relative;
+    margin-bottom: 0.5rem;
+  }
+  .pwd-input-wrap input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    padding: 0.75rem 2.5rem 0.75rem 1rem;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.2s;
+    letter-spacing: 0.1em;
+  }
+  .pwd-input-wrap input:focus { border-color: var(--accent); }
+  .pwd-input-wrap input.error { border-color: var(--danger); animation: shake 0.3s; }
+  .pwd-toggle {
+    position: absolute; right: 10px; top: 50%;
+    transform: translateY(-50%);
+    background: none; border: none; color: var(--muted);
+    cursor: pointer; padding: 4px;
+  }
+  .pwd-error {
+    font-size: 11px; color: var(--danger);
+    margin-top: 0.4rem; display: none;
+  }
+  .pwd-error.show { display: block; }
+
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+
+  .admin-hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<header>
+  <button class="about-btn" onclick="openAbout()">Acerca de</button>
+  <div class="header-label">Directorio · España</div>
+  <h1>Mujeres & Disidencias<br>en la <em>Música Experimental Española</em></h1>
+  <div class="header-sub">Base de datos gestionable · Edita, añade y filtra artistas</div>
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-number" id="stat-total">0</div>
+      <div class="stat-label">Artistas</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number" id="stat-cats">0</div>
+      <div class="stat-label">Categorías</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number" id="stat-places">0</div>
+      <div class="stat-label">Lugares</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number" id="stat-years">0</div>
+      <div class="stat-label">Con año</div>
+    </div>
+  </div>
+</header>
+
+<div class="toolbar">
+  <div class="search-wrap">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="text" id="search" placeholder="Buscar por nombre, lugar, categoría...">
+  </div>
+  <select id="filter-cat">
+    <option value="">Todas las categorías</option>
+  </select>
+  <select id="filter-loc">
+    <option value="">Todos los lugares</option>
+  </select>
+  <select id="sort-by">
+    <option value="nombre">Ordenar: Nombre</option>
+    <option value="año">Ordenar: Año</option>
+    <option value="lugar">Ordenar: Lugar</option>
+    <option value="categoria">Ordenar: Categoría</option>
+  </select>
+  <div class="view-toggle">
+    <button class="view-btn active" id="btn-table" onclick="setView('table')" title="Tabla">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg>
+    </button>
+    <button class="view-btn" id="btn-card" onclick="setView('card')" title="Tarjetas">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+    </button>
+  </div>
+  <div class="toolbar-right">
+    <button class="btn btn-ghost" onclick="exportCSV()">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Exportar CSV
+    </button>
+    <button class="lock-badge" id="lock-btn" onclick="toggleLock()">
+      <svg id="lock-icon" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <span id="lock-label">Modo edición</span>
+    </button>
+    <button class="btn btn-primary admin-hidden" id="btn-add" onclick="openAddModal()">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Añadir artista
+    </button>
+  </div>
+</div>
+
+<main>
+  <div class="results-info" id="results-info"></div>
+  <div id="view-table">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th onclick="sortBy('nombre')" id="th-nombre">Nombre <span class="sort-arrow">↕</span></th>
+            <th onclick="sortBy('año')" id="th-año">Año <span class="sort-arrow">↕</span></th>
+            <th onclick="sortBy('lugar')" id="th-lugar">Lugar <span class="sort-arrow">↕</span></th>
+            <th onclick="sortBy('categoria')" id="th-categoria">Categoría sonora <span class="sort-arrow">↕</span></th>
+            <th>Otros</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </div>
+  </div>
+  <div id="view-card" style="display:none">
+    <div class="cards-grid" id="cards-grid"></div>
+  </div>
+</main>
+
+<!-- PASSWORD MODAL -->
+<div class="modal-overlay" id="modal-pwd">
+  <div class="modal" style="max-width:360px">
+    <div class="modal-title" style="margin-bottom:0.5rem">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Acceso de edición
+    </div>
+    <p style="font-size:11px;color:var(--muted);margin-bottom:1.25rem;line-height:1.6">Introduce la contraseña para activar el modo edición y poder añadir, editar o eliminar artistas.</p>
+    <div class="pwd-input-wrap">
+      <input type="password" id="pwd-input" placeholder="Contraseña" onkeydown="if(event.key==='Enter')checkPassword()">
+      <button class="pwd-toggle" onclick="togglePwdVisibility()" tabindex="-1">
+        <svg id="pwd-eye" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
+    </div>
+    <div class="pwd-error" id="pwd-error">Contraseña incorrecta. Inténtalo de nuevo.</div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modal-pwd')">Cancelar</button>
+      <button class="btn btn-primary" onclick="checkPassword()">Entrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD/EDIT MODAL -->
+<div class="modal-overlay" id="modal-edit">
+  <div class="modal">
+    <div class="modal-title" id="modal-title">Nueva artista</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Nombre</label>
+        <input type="text" id="f-nombre" placeholder="Nombre artístico o real">
+      </div>
+      <div class="form-group">
+        <label>Alias / nombre entre paréntesis</label>
+        <input type="text" id="f-alias" placeholder="Ej: Narcoléptica">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Año de nacimiento</label>
+        <input type="text" id="f-año" placeholder="Ej: 1988">
+      </div>
+      <div class="form-group">
+        <label>Lugar de nacimiento / base</label>
+        <input type="text" id="f-lugar" placeholder="Ej: Madrid">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Categoría sonora</label>
+      <input type="text" id="f-categoria" placeholder="Ej: Electroacústica, paisaje sonoro...">
+    </div>
+    <div class="form-group">
+      <label>Otros / notas</label>
+      <textarea id="f-otros" rows="3" placeholder="Proyectos, datos adicionales..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modal-edit')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveArtista()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT PANEL -->
+<div class="about-overlay" id="about-overlay" onclick="closeAbout(event)">
+  <div class="about-panel">
+    <div class="about-header">
+      <button class="about-close" onclick="closeAbout()">✕</button>
+      <div class="about-role">Editora · Investigadora doctoral</div>
+      <div class="about-name">Gara Hernández Sánchez</div>
+      <div class="about-tags">
+        <span class="about-tag">Artista sonora</span>
+        <span class="about-tag">Musicóloga</span>
+        <span class="about-tag">Doctoranda</span>
+        <span class="about-tag">Editora</span>
+      </div>
+    </div>
+
+    <div class="about-body">
+
+      <div class="about-section">
+        <div class="about-section-title">Sobre esta base de datos</div>
+        <div class="about-text">
+          <p>Este directorio es una herramienta de investigación desarrollada como parte de una tesis doctoral en Musicología en la Universidad Autónoma de Madrid. Recoge y sistematiza información sobre mujeres y disidencias sexogenéricas en las músicas experimentales producidas desde el Estado español.</p>
+          <p>La base de datos nace de la necesidad de visibilizar y documentar la producción artística de estas creadoras, históricamente subrepresentadas en los archivos y relatos de la música experimental.</p>
+        </div>
+      </div>
+
+      <div class="about-section">
+        <div class="about-section-title">Trayectoria</div>
+        <div class="about-text">
+          <p>Artista sonora, musicóloga y actual doctoranda en Musicología en la UAM, donde desarrolla una investigación centrada en las mujeres y las disidencias sexogenéricas en las músicas experimentales producidas desde el Estado español.</p>
+          <p>Posee un Máster en Estudios Artísticos, Literarios y de la Cultura (especialización en Culturas del Arte, la Imagen y la Teoría del Conocimiento), y formación en piano clásico por el Conservatorio de Las Palmas de Gran Canaria y el Conservatorio Profesional Victoria de los Ángeles (Madrid).</p>
+          <p>Su trayectoria combina práctica artística e investigación teórica, con enfoque en la experimentación sonora, el ruidismo electroacústico y las políticas identitarias. Ha trabajado en residencias como El Tanque (Tenerife), el Auditorio de Tenerife o La Aceitera (Sevilla), y en festivales como Island Connect, HER Feminist Festival, Festival de Danse Cannes o Dialeg Obert.</p>
+          <p>Su obra ha sido seleccionada por la Confederación Internacional de Música Electroacústica (CIME, China) y Paisajistas Sonoras (Argentina). Ha realizado performances, talleres y sesiones de escucha en Barcelona, Valencia, Madrid y Tenerife, en espacios como el Círculo de Bellas Artes de Madrid, el Museo TEA o el Teatro El Musical de Valencia. Ha colaborado en <em>CALENTAMIENTO</em> de Rocío Molina, junto a Niño de Elche y Pablo Messiez.</p>
+        </div>
+      </div>
+
+      <div class="about-section">
+        <div class="about-section-title">Investigación y gestión</div>
+        <div class="about-text">
+          <p>Forma parte de la comisión de trabajo de la Asociación de Música Electroacústica y Arte Sonoro de España (AMEE) y colabora en los proyectos I+D CantyReZa (UAM) y CREAMUS (UCM, CSIC, UAM). Ha sido beneficiaria de la beca de colaboración UAM y la Beca Santander de posgrado.</p>
+          <p>Es directora de la colección de arte sonoro ZÓNICA en la editorial Libargo, donde también realiza labores de revisión científica. Desde 2022 dirige la revista cultural digital <em>Resuena</em>, dedicada a la divulgación cultural desde una perspectiva crítica y multidisciplinar. Conduce además un pódcast mensual en Minerva Radio (Argentina), centrado en la experimentación y el ensayo sonoro.</p>
+        </div>
+      </div>
+
+      <div class="about-section">
+        <div class="about-section-title">Datos académicos</div>
+        <div class="about-meta-row">
+          <span class="about-meta-label">Universidad</span>
+          <span class="about-meta-val">Universidad Autónoma de Madrid</span>
+        </div>
+        <div class="about-meta-row">
+          <span class="about-meta-label">Programa</span>
+          <span class="about-meta-val">Doctorado en Musicología</span>
+        </div>
+        <div class="about-meta-row">
+          <span class="about-meta-label">Inicio</span>
+          <span class="about-meta-val">2022</span>
+        </div>
+        <div class="about-meta-row">
+          <span class="about-meta-label">Contacto</span>
+          <span class="about-meta-val">
+            <a href="mailto:gara.hernandez25@gmail.com" class="about-link">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              gara.hernandez25@gmail.com
+            </a>
+          </span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="about-footer">
+      Base de datos en construcción · Última actualización 2025 · Uso académico
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM DELETE MODAL -->
+<div class="modal-overlay" id="modal-confirm">
+  <div class="modal" style="max-width:380px">
+    <div class="modal-title">¿Eliminar artista?</div>
+    <div class="confirm-text">
+      Vas a eliminar a <span class="confirm-name" id="confirm-name"></span> de la base de datos. Esta acción no se puede deshacer.
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modal-confirm')">Cancelar</button>
+      <button class="btn btn-danger" onclick="confirmDelete()" style="background:rgba(196,92,92,0.15);border:1px solid var(--danger)">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── DATA ────────────────────────────────────────────────────────────────────
+const RAW = [
+  {nombre:"Alba Morin",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Alba Tuno",alias:"",año:"",lugar:"Las Palmas de Gran Canaria",categoria:"Saxofon procesado",otros:""},
+  {nombre:"Adina",alias:"Alvdina",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Agnes Pe",alias:"",año:"1985",lugar:"Lérida",categoria:"Electroacústica",otros:""},
+  {nombre:"Alejandra Hernández",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Alejandra Muñoz",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Alicia Reyes",alias:"",año:"1996",lugar:"Extremadura",categoria:"Electroacústica",otros:""},
+  {nombre:"Amanda Mur",alias:"",año:"1996",lugar:"Cantabria",categoria:"Piano experimental",otros:""},
+  {nombre:"Andrea Munián",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Ángela del Río",alias:"Calma parda",año:"1996",lugar:"Toledo",categoria:"Ambient, drone, noise",otros:"Nervio Ignoto"},
+  {nombre:"Ani Zinc",alias:"",año:"",lugar:"Granada",categoria:"Experimental Synth 80",otros:"Diseño Corbusier / Neo Zelanda"},
+  {nombre:"Anna Bofill Levi",alias:"",año:"1994",lugar:"Barcelona",categoria:"Compositora electroacústica",otros:""},
+  {nombre:"Anna Gatz",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Anna Ricci",alias:"",año:"",lugar:"",categoria:"Intérprete de contemporánea",otros:""},
+  {nombre:"Annika Franke",alias:"",año:"",lugar:"base en Barcelona",categoria:"",otros:""},
+  {nombre:"Ariadna Alsina Tarrés",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Barbara Held",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Beatriz Vaca",alias:"Narcoléptica",año:"1985",lugar:"Barcelona",categoria:"Experimental",otros:""},
+  {nombre:"Carlota Cáceres",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Carme López Fernández",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Carmen Hernández",alias:"",año:"",lugar:"Las Palmas de Gran Canaria",categoria:"",otros:""},
+  {nombre:"Carmen Kleykens Vidal",alias:"",año:"1998",lugar:"Valencia",categoria:"Tecnologías posthumanas sonoras",otros:""},
+  {nombre:"Charo Calvo",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Clara Aguilar",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Clara Brea",alias:"",año:"",lugar:"Madrid",categoria:"Paisaje sonoro",otros:""},
+  {nombre:"Clara de Asís",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Clara Gari",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Coco Moya",alias:"Menhir",año:"1982",lugar:"Gijón",categoria:"Arte Sonoro",otros:""},
+  {nombre:"Concha Jerez",alias:"",año:"1941",lugar:"Las Palmas de Gran Canaria",categoria:"Arte Sonoro",otros:"Instalación sonora"},
+  {nombre:"Consuelo Díaz",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Cristina Palmese",alias:"",año:"",lugar:"",categoria:"Paisaje sonoro",otros:""},
+  {nombre:"Cruhda",alias:"",año:"",lugar:"Madrid",categoria:"Electrónica experimental - folklore",otros:""},
+  {nombre:"Diana Perez Custodio",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Edith Alonso",alias:"",año:"1974",lugar:"Madrid",categoria:"Electroacústica",otros:"acusmática, piano electroacústico"},
+  {nombre:"Elena Asins",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Elena Montaña",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Elena Sáenz de Tejada",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Eli Gras",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Elia Torrecilla",alias:"",año:"",lugar:"Valencia",categoria:"Paisaje sonoro",otros:""},
+  {nombre:"Esperanza Abad",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Fátima Mirada",alias:"",año:"",lugar:"",categoria:"Voz experimental",otros:""},
+  {nombre:"Gara Hernández",alias:"",año:"2001",lugar:"Gran Canaria",categoria:"Ruidismo",otros:""},
+  {nombre:"Genoveva Ferrocide",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Hara Alonso",alias:"",año:"",lugar:"Alicante",categoria:"Electroacústica",otros:"Piano"},
+  {nombre:"Inmaculada Cárdenas",alias:"",año:"1952",lugar:"Cádiz",categoria:"Electroacústica",otros:"Piano académico"},
+  {nombre:"Io Casino",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Isabel Urrutia",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Irene Aranda",alias:"",año:"",lugar:"Jaén",categoria:"Electroacústica",otros:"Piano"},
+  {nombre:"Ilaria Degradi",alias:"",año:"",lugar:"",categoria:"Paisaje sonoro",otros:"Grabación sonora"},
+  {nombre:"Itziar Okariz",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Irene de la Cueva",alias:"Ivankovà",año:"",lugar:"Madrid",categoria:"",otros:""},
+  {nombre:"Jana Jan",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Lali Barbiere",alias:"",año:"",lugar:"Barcelona",categoria:"",otros:""},
+  {nombre:"Lina Lab",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Laura Romero Valldecabres",alias:"",año:"",lugar:"Valencia",categoria:"Paisaje sonoro",otros:""},
+  {nombre:"Lorena Izquierdo",alias:"",año:"",lugar:"Valencia",categoria:"Performances vocal, poesía sonora",otros:""},
+  {nombre:"Maria Caudevilla",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Maria de Alvear",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Maria Escribano",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Maria José Martín de la Hoz",alias:"mil dolores pequeños",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Maria Vila",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Marina Delicado",alias:"",año:"",lugar:"Valencia",categoria:"Electroacústica",otros:"Piano y contemporáneo"},
+  {nombre:"Marina Herlop",alias:"",año:"",lugar:"",categoria:"Electrónica, piano y voz experimental",otros:""},
+  {nombre:"Marisa Manchado",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Marta",alias:"Arco Iris",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Marta Sainz",alias:"",año:"",lugar:"Santander",categoria:"Performances vocal",otros:""},
+  {nombre:"Medial Ages",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Mercé Capdevilla",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Merche Blasco",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Monica Rikic",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Montserrat Palacios",alias:"",año:"",lugar:"México / Valencia",categoria:"Performances vocal",otros:""},
+  {nombre:"Mursego",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Nara is Neus",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Nieves Correa",alias:"",año:"1960",lugar:"Madrid",categoria:"Performance y arte de acción",otros:""},
+  {nombre:"Nico Pikante",alias:"",año:"",lugar:"Argentina / Barcelona",categoria:"Electrónica experimental",otros:""},
+  {nombre:"Nikka",alias:"",año:"",lugar:"Barcelona",categoria:"",otros:""},
+  {nombre:"Noelia Covelo Velasco",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Okkre",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"P11111",alias:"",año:"",lugar:"Valencia",categoria:"Drone",otros:""},
+  {nombre:"Patricia Usero",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Pilar Talavera",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Polifeme",alias:"Marieta",año:"",lugar:"Valencia",categoria:"Electroacústica",otros:"Ruidista"},
+  {nombre:"Raquel Ibáñez",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Reyes Oteo",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Rocío Calvo",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Rosa Arruti",alias:"Nad Spiro",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Ruth Barberán",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Sarcoma",alias:"LUNA",año:"",lugar:"Madrid",categoria:"Techno Noise",otros:""},
+  {nombre:"Soledad Ruiz Hernández",alias:"",año:"1984",lugar:"Jaén",categoria:"Ficción sonora radiofónica",otros:""},
+  {nombre:"Sofía Baltonin",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Susana Jimenez Carmona",alias:"",año:"",lugar:"",categoria:"Paisaje sonoro",otros:""},
+  {nombre:"Susana López",alias:"",año:"",lugar:"",categoria:"Electroacústica",otros:"Ambient"},
+  {nombre:"Tendencia Imposible",alias:"",año:"",lugar:"Valencia",categoria:"NOISE",otros:""},
+  {nombre:"Tina Valent",alias:"macromassa",año:"",lugar:"Barcelona",categoria:"",otros:""},
+  {nombre:"Tuna Pase",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Xelo Giner",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Xiwire",alias:"",año:"",lugar:"",categoria:"",otros:""},
+  {nombre:"Zulema de la Cruz",alias:"",año:"1958",lugar:"",categoria:"",otros:""},
+];
+
+// ─── STATE ───────────────────────────────────────────────────────────────────
+const DATA_VERSION = '2';
+if (localStorage.getItem('mde-version') !== DATA_VERSION) {
+  localStorage.removeItem('mde-data');
+  localStorage.setItem('mde-version', DATA_VERSION);
+}
+let data = JSON.parse(localStorage.getItem('mde-data') || 'null') || RAW.map((d,i) => ({...d, id: i+1}));
+let nextId = Math.max(...data.map(d=>d.id)) + 1;
+
+let view = 'table';
+let sortField = 'nombre';
+let sortDir = 1;
+let editId = null;
+let deleteId = null;
+
+function save() {
+  try { localStorage.setItem('mde-data', JSON.stringify(data)); } catch(e){}
+}
+
+// ─── FILTERS ─────────────────────────────────────────────────────────────────
+function getFiltered() {
+  const q = document.getElementById('search').value.toLowerCase();
+  const cat = document.getElementById('filter-cat').value;
+  const loc = document.getElementById('filter-loc').value;
+  return data
+    .filter(d => {
+      const text = `${d.nombre} ${d.alias} ${d.lugar} ${d.categoria} ${d.otros}`.toLowerCase();
+      if (q && !text.includes(q)) return false;
+      if (cat && !d.categoria.toLowerCase().includes(cat.toLowerCase())) return false;
+      if (loc && !d.lugar.toLowerCase().includes(loc.toLowerCase())) return false;
+      return true;
+    })
+    .sort((a,b) => {
+      const av = a[sortField] || '';
+      const bv = b[sortField] || '';
+      return av.localeCompare(bv, 'es') * sortDir;
+    });
+}
+
+function populateFilters() {
+  const cats = [...new Set(data.map(d => d.categoria).filter(Boolean))].sort();
+  const locs = [...new Set(data.map(d => d.lugar).filter(Boolean))].sort();
+  const catEl = document.getElementById('filter-cat');
+  const locEl = document.getElementById('filter-loc');
+  const catVal = catEl.value, locVal = locEl.value;
+  catEl.innerHTML = '<option value="">Todas las categorías</option>' + cats.map(c=>`<option value="${c}">${c}</option>`).join('');
+  locEl.innerHTML = '<option value="">Todos los lugares</option>' + locs.map(l=>`<option value="${l}">${l}</option>`).join('');
+  catEl.value = catVal;
+  locEl.value = locVal;
+}
+
+function updateStats() {
+  document.getElementById('stat-total').textContent = data.length;
+  document.getElementById('stat-cats').textContent = new Set(data.map(d=>d.categoria).filter(Boolean)).size;
+  document.getElementById('stat-places').textContent = new Set(data.map(d=>d.lugar).filter(Boolean)).size;
+  document.getElementById('stat-years').textContent = data.filter(d=>d.año).length;
+}
+
+// ─── RENDER ──────────────────────────────────────────────────────────────────
+function render() {
+  populateFilters();
+  updateStats();
+  const filtered = getFiltered();
+  const total = data.length;
+  document.getElementById('results-info').innerHTML =
+    filtered.length === total
+      ? `Mostrando <span>${total}</span> artistas`
+      : `Mostrando <span>${filtered.length}</span> de ${total} artistas`;
+
+  if (view === 'table') renderTable(filtered);
+  else renderCards(filtered);
+}
+
+function renderTable(items) {
+  const tbody = document.getElementById('table-body');
+  if (!items.length) {
+    tbody.innerHTML = `<tr><td colspan="6" class="empty"><div class="empty-icon">♪</div>No se encontraron artistas.</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = items.map(d => `
+    <tr>
+      <td class="name-cell">
+        ${d.nombre}
+        ${d.alias ? `<span class="alias">${d.alias}</span>` : ''}
+      </td>
+      <td>${d.año ? `<span class="tag-year">${d.año}</span>` : '<span class="dot"></span>'}</td>
+      <td>${d.lugar ? `<span class="tag tag-loc">${d.lugar}</span>` : ''}</td>
+      <td>${d.categoria ? `<span class="tag tag-cat">${d.categoria}</span>` : ''}</td>
+      <td style="color:var(--muted);font-size:11px;max-width:180px">${d.otros || ''}</td>
+      <td>
+        <div class="actions-cell">
+          ${isAdmin ? `<button class="btn btn-ghost btn-sm" onclick="openEditModal(${d.id})">Editar</button>
+          <button class="btn btn-danger btn-sm" onclick="openDeleteModal(${d.id})">✕</button>` : ''}
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function renderCards(items) {
+  const grid = document.getElementById('cards-grid');
+  if (!items.length) {
+    grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><div class="empty-icon">♪</div>No se encontraron artistas.</div>`;
+    return;
+  }
+  grid.innerHTML = items.map(d => `
+    <div class="card">
+      <div class="card-name">${d.nombre}</div>
+      ${d.alias ? `<div class="card-alias">${d.alias}</div>` : ''}
+      <div class="card-meta">
+        ${d.año ? `<span class="tag tag-year">${d.año}</span>` : ''}
+        ${d.lugar ? `<span class="tag tag-loc">${d.lugar}</span>` : ''}
+        ${d.categoria ? `<span class="tag tag-cat">${d.categoria}</span>` : ''}
+      </div>
+      ${d.otros ? `<div class="card-otros">${d.otros}</div>` : ''}
+      <div class="card-actions">
+        ${isAdmin ? `<button class="btn btn-ghost btn-sm" onclick="openEditModal(${d.id})" style="flex:1">Editar</button>
+        <button class="btn btn-danger btn-sm" onclick="openDeleteModal(${d.id})">✕</button>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+// ─── SORT ────────────────────────────────────────────────────────────────────
+function sortBy(field) {
+  if (sortField === field) sortDir *= -1;
+  else { sortField = field; sortDir = 1; }
+  ['nombre','año','lugar','categoria'].forEach(f => {
+    const th = document.getElementById('th-'+f);
+    if (th) { th.classList.toggle('sorted', f === field); }
+  });
+  document.getElementById('sort-by').value = field;
+  render();
+}
+
+document.getElementById('sort-by').addEventListener('change', function() {
+  sortField = this.value;
+  sortDir = 1;
+  render();
+});
+
+// ─── VIEW ────────────────────────────────────────────────────────────────────
+function setView(v) {
+  view = v;
+  document.getElementById('view-table').style.display = v === 'table' ? 'block' : 'none';
+  document.getElementById('view-card').style.display = v === 'card' ? 'block' : 'none';
+  document.getElementById('btn-table').classList.toggle('active', v === 'table');
+  document.getElementById('btn-card').classList.toggle('active', v === 'card');
+  render();
+}
+
+// ─── MODAL ───────────────────────────────────────────────────────────────────
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function openAddModal() {
+  editId = null;
+  document.getElementById('modal-title').textContent = 'Nueva artista';
+  ['nombre','alias','año','lugar','categoria','otros'].forEach(f => {
+    document.getElementById('f-'+f).value = '';
+  });
+  openModal('modal-edit');
+}
+
+function openEditModal(id) {
+  const d = data.find(x => x.id === id);
+  if (!d) return;
+  editId = id;
+  document.getElementById('modal-title').textContent = 'Editar artista';
+  document.getElementById('f-nombre').value = d.nombre;
+  document.getElementById('f-alias').value = d.alias;
+  document.getElementById('f-año').value = d.año;
+  document.getElementById('f-lugar').value = d.lugar;
+  document.getElementById('f-categoria').value = d.categoria;
+  document.getElementById('f-otros').value = d.otros;
+  openModal('modal-edit');
+}
+
+function saveArtista() {
+  const nombre = document.getElementById('f-nombre').value.trim();
+  if (!nombre) { toast('El nombre es obligatorio', true); return; }
+  const entry = {
+    nombre,
+    alias: document.getElementById('f-alias').value.trim(),
+    año: document.getElementById('f-año').value.trim(),
+    lugar: document.getElementById('f-lugar').value.trim(),
+    categoria: document.getElementById('f-categoria').value.trim(),
+    otros: document.getElementById('f-otros').value.trim(),
+  };
+  if (editId) {
+    const idx = data.findIndex(d => d.id === editId);
+    data[idx] = { ...data[idx], ...entry };
+    toast('Artista actualizada ✓');
+  } else {
+    data.push({ ...entry, id: nextId++ });
+    toast('Artista añadida ✓');
+  }
+  save();
+  closeModal('modal-edit');
+  render();
+}
+
+function openDeleteModal(id) {
+  deleteId = id;
+  const d = data.find(x => x.id === id);
+  document.getElementById('confirm-name').textContent = d.nombre;
+  openModal('modal-confirm');
+}
+
+function confirmDelete() {
+  data = data.filter(d => d.id !== deleteId);
+  save();
+  closeModal('modal-confirm');
+  render();
+  toast('Artista eliminada');
+}
+
+// ─── CLOSE ON OVERLAY CLICK ──────────────────────────────────────────────────
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); });
+});
+
+// ─── TOAST ───────────────────────────────────────────────────────────────────
+function toast(msg, err=false) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.style.borderLeftColor = err ? 'var(--danger)' : 'var(--accent)';
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+// ─── EXPORT CSV ──────────────────────────────────────────────────────────────
+function exportCSV() {
+  const header = ['Nombre', 'Alias', 'Año de nacimiento', 'Lugar de nacimiento', 'Categoría sonora', 'Otros'];
+  const rows = data.map(d => [d.nombre, d.alias, d.año, d.lugar, d.categoria, d.otros].map(v => `"${(v||'').replace(/"/g,'""')}"`));
+  const csv = [header, ...rows].map(r => r.join(',')).join('\r\n');
+  const blob = new Blob(['\ufeff'+csv], { type: 'text/csv;charset=utf-8;' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'mujeres_disidencias_musica_experimental_es.csv';
+  a.click();
+  toast('CSV exportado ✓');
+}
+
+// ─── LISTENERS ───────────────────────────────────────────────────────────────
+document.getElementById('search').addEventListener('input', render);
+document.getElementById('filter-cat').addEventListener('change', render);
+document.getElementById('filter-loc').addEventListener('change', render);
+
+// ─── PASSWORD / ADMIN ────────────────────────────────────────────────────────
+const PWD_HASH = '7a3f2e1d9c8b6a5f4e3d2c1b0a9f8e7d6c5b4a3f2e1d9c8b'; // placeholder, replaced below
+const CORRECT = 'Nervioignoto1';
+let isAdmin = false;
+
+function toggleLock() {
+  if (isAdmin) {
+    // Lock
+    isAdmin = false;
+    updateAdminUI();
+    toast('Modo edición desactivado');
+  } else {
+    // Ask for password
+    document.getElementById('pwd-input').value = '';
+    document.getElementById('pwd-error').classList.remove('show');
+    document.getElementById('pwd-input').classList.remove('error');
+    openModal('modal-pwd');
+    setTimeout(() => document.getElementById('pwd-input').focus(), 100);
+  }
+}
+
+function checkPassword() {
+  const val = document.getElementById('pwd-input').value;
+  if (val === CORRECT) {
+    isAdmin = true;
+    closeModal('modal-pwd');
+    updateAdminUI();
+    toast('Modo edición activado ✓');
+  } else {
+    document.getElementById('pwd-error').classList.add('show');
+    const inp = document.getElementById('pwd-input');
+    inp.classList.add('error');
+    setTimeout(() => inp.classList.remove('error'), 400);
+    inp.select();
+  }
+}
+
+function togglePwdVisibility() {
+  const inp = document.getElementById('pwd-input');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+}
+
+function updateAdminUI() {
+  const addBtn = document.getElementById('btn-add');
+  const lockBtn = document.getElementById('lock-btn');
+  const lockIcon = document.getElementById('lock-icon');
+  const lockLabel = document.getElementById('lock-label');
+
+  if (isAdmin) {
+    addBtn.classList.remove('admin-hidden');
+    lockBtn.classList.add('unlocked');
+    lockLabel.textContent = 'Bloquear edición';
+    lockIcon.innerHTML = '<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/>';
+  } else {
+    addBtn.classList.add('admin-hidden');
+    lockBtn.classList.remove('unlocked');
+    lockLabel.textContent = 'Modo edición';
+    lockIcon.innerHTML = '<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>';
+  }
+  render();
+}
+
+// ─── ABOUT ───────────────────────────────────────────────────────────────────
+function openAbout() { document.getElementById('about-overlay').classList.add('open'); }
+function closeAbout(e) {
+  if (!e || e.target === document.getElementById('about-overlay')) {
+    document.getElementById('about-overlay').classList.remove('open');
+  }
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+render();
+</script>
+</body>
+</html>
